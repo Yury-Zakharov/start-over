@@ -1,0 +1,164 @@
+# API Contract: JSON Resume Editor
+
+## Resume API
+
+### GET /api/resume
+
+**Description**: Load the resume data from the file system
+
+**Request**:
+- Method: GET
+- Path: `/api/resume`
+- Headers: None required
+- Query Parameters: None
+- Request Body: N/A
+
+**Success Response**:
+- Status: 200 OK
+- Content-Type: application/json
+- Body: 
+```json
+{
+  "basics": {
+    "name": "John Doe",
+    "label": "Programmer",
+    "email": "john@example.com",
+    "phone": "+1234567890",
+    "url": "http://johndoe.com",
+    "summary": "A summary of John Doe...",
+    "location": {
+      "address": "123 Main St",
+      "postalCode": "12345",
+      "city": "Anytown",
+      "countryCode": "US",
+      "region": "NY"
+    },
+    "profiles": [
+      {
+        "network": "Twitter",
+        "username": "johndoe",
+        "url": "http://twitter.com/johndoe"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Company A",
+      "position": "Software Engineer",
+      "url": "https://company-a.com",
+      "startDate": "2020-01-01",
+      "endDate": "2022-01-01",
+      "summary": "Worked on various projects",
+      "highlights": [
+        "Implemented feature X",
+        "Optimized system Y"
+      ]
+    }
+  ],
+  "volunteer": [],
+  "education": [],
+  "awards": [],
+  "publications": [],
+  "skills": [],
+  "languages": [],
+  "interests": [],
+  "references": [],
+  "projects": []
+}
+```
+
+**Error Responses**:
+- 404 Not Found: If the resume file does not exist
+- 400 Bad Request: If the resume file contains invalid JSON
+- 500 Internal Server Error: If there's a server-side error reading the file
+
+---
+
+### POST /api/resume
+
+**Description**: Save the resume data to the file system
+
+**Request**:
+- Method: POST
+- Path: `/api/resume`
+- Headers: 
+  - Content-Type: application/json
+- Query Parameters: None
+- Request Body: Full resume object in JSON Resume format
+
+**Success Response**:
+- Status: 200 OK
+- Content-Type: application/json
+- Body: 
+```json
+{
+  "success": true,
+  "message": "Resume saved successfully"
+}
+```
+
+**Error Responses**:
+- 400 Bad Request: If the resume data is invalid or doesn't conform to JSON Resume schema
+- 500 Internal Server Error: If there's a server-side error writing the file
+
+---
+
+### GET /api/file-path
+
+**Description**: Get the current file path for the resume file
+
+**Request**:
+- Method: GET
+- Path: `/api/file-path`
+- Headers: None required
+- Query Parameters: None
+- Request Body: N/A
+
+**Success Response**:
+- Status: 200 OK
+- Content-Type: application/json
+- Body:
+```json
+{
+  "filePath": "/app/resume.json",
+  "exists": true
+}
+```
+
+**Error Responses**:
+- 500 Internal Server Error: If there's a server-side error accessing the file
+
+---
+
+### POST /api/file-path
+
+**Description**: Set the resume file path
+
+**Request**:
+- Method: POST
+- Path: `/api/file-path`
+- Headers:
+  - Content-Type: application/json
+- Query Parameters: None
+- Request Body:
+```json
+{
+  "filePath": "/path/to/resume.json"
+}
+```
+
+**Success Response**:
+- Status: 200 OK
+- Content-Type: application/json
+- Body:
+```json
+{
+  "success": true,
+  "message": "File path updated successfully"
+}
+```
+
+**Error Responses**:
+- 400 Bad Request: If the file path is invalid
+- 403 Forbidden: If the application doesn't have read/write permissions to the file
+- 500 Internal Server Error: If there's a server-side error
